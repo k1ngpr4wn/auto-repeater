@@ -13,8 +13,9 @@ public class Highlighter extends Filter {
       new Color(0x64FFFF),
       new Color(0x6262FF),
       new Color(0xFFC6CC),
-      new Color(0xFE63FD) ,
+      new Color(0xFE63FD),
       new Color(0xB3B5B2),
+      new Color(0x000000),
   };
 
   public final static Color[] SELECTED_COLORS = {
@@ -28,6 +29,7 @@ public class Highlighter extends Filter {
       new Color(0xDFA8A8),
       new Color(0xDF44DF),
       new Color(0x949494),
+      new Color(0x000000),
   };
 
   public final static String[] COLOR_NAMES = {
@@ -40,7 +42,8 @@ public class Highlighter extends Filter {
       "PURPLE",
       "PINK",
       "MAGENTA",
-      "GRAY"
+      "GRAY",
+      "BLACK",
   };
 
 

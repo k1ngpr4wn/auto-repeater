@@ -6,6 +6,9 @@ package burp;
 
 import burp.Utils.AutoRepeaterMenu;
 import burp.Utils.Utils;
+import burp.api.montoya.BurpExtension;
+import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.ui.Theme;
 import com.google.gson.*;
 
 import java.awt.*;
@@ -19,7 +22,7 @@ import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class BurpExtender implements IBurpExtender, ITab, IHttpListener, IContextMenuFactory {
+public class BurpExtender implements BurpExtension, IBurpExtender, ITab, IHttpListener, IContextMenuFactory {
 
   // burp stuff
   private static IBurpExtenderCallbacks callbacks;
@@ -30,6 +33,7 @@ public class BurpExtender implements IBurpExtender, ITab, IHttpListener, IContex
   private static JTabbedPane parentTabbedPane;
   private static JPanel newTabButton;
   private static AutoRepeaterMenu autoRepeaterMenu;
+  public static MontoyaApi montoyaApi;
   private ExecutorService executor;
   //private static ResponseStore responseStore;
 
@@ -101,6 +105,16 @@ public class BurpExtender implements IBurpExtender, ITab, IHttpListener, IContex
         getUiComponent().addHierarchyListener(new MenuCreatingHierarchyListener());
       }
     });
+  }
+
+  public static boolean isDarkTheme() {
+    return montoyaApi.userInterface().currentTheme() == Theme.DARK;
+  }
+
+  @Override
+  public void initialize(MontoyaApi api) {
+    BurpExtender.montoyaApi = api;
+    api.logging().logToOutput("initialize(MontoyaApi api)");
   }
 
   private class MenuCreatingHierarchyListener implements HierarchyListener {

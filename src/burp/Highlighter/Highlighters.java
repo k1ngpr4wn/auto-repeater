@@ -5,9 +5,7 @@ import burp.AutoRepeater.LogTable;
 import burp.BurpExtender;
 import burp.Logs.LogEntry;
 import burp.Logs.LogManager;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
@@ -65,13 +63,18 @@ public class Highlighters {
   }
 
   public void highlight(LogEntry logEntry) {
-    logEntry.setBackgroundColor(Highlighter.COLORS[0], Highlighter.SELECTED_COLORS[0]);
+    if (BurpExtender.isDarkTheme()) {
+      logEntry.setBackgroundColor(Color.WHITE, Color.WHITE);
+    }else{
+      logEntry.setBackgroundColor(Color.BLACK, Color.BLACK);
+    }
+
     for (HighlighterTableModel highlighterTableModel : highlighterUITableModel.getTableModels()) {
       if (highlighterTableModel.isEnabled()) {
         for (Highlighter highlighter : highlighterTableModel.getHighlighters()) {
           if (highlighter.isEnabled() && highlighter.checkCondition(logEntry)) {
             logEntry.setBackgroundColor(
-                highlighterTableModel.getColor(), highlighterTableModel.getSelectedColor());
+                highlighterTableModel.getSelectedColor(), highlighterTableModel.getSelectedColor());
           }
         }
       }
@@ -102,14 +105,15 @@ public class Highlighters {
             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         // Only color the color column
         if (column == 1) {
-          c.setBackground(highlighterUITableModel.getTableModels().get(row).getColor());
+          c.setForeground(highlighterUITableModel.getTableModels().get(row).getColor());
           if (isSelected) {
-            c.setBackground(highlighterUITableModel.getTableModels().get(row).getSelectedColor());
+            c.setForeground(highlighterUITableModel.getTableModels().get(row).getSelectedColor());
           }
         } else {
-          c.setBackground(Highlighter.COLORS[0]);
-          if (isSelected) {
-            c.setBackground(Highlighter.SELECTED_COLORS[0]);
+          if (BurpExtender.isDarkTheme()) {
+            c.setForeground(Color.WHITE);
+          }else{
+            c.setForeground(Color.BLACK);
           }
         }
         return c;
@@ -250,7 +254,7 @@ public class Highlighters {
       label.setOpaque(true);
       for (int i = 0; i < Highlighter.COLOR_NAMES.length; i++) {
         if (label.getText().equals(Highlighter.COLOR_NAMES[i])) {
-          label.setBackground(Highlighter.COLORS[i]);
+          label.setForeground(Highlighter.COLORS[i]);
         }
       }
       return label;
